@@ -1,0 +1,44 @@
+{
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!doctype html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>BXP, Inc.</title>\n    <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n    <h1 id=\"share-entity-name\">BXP, Inc.</h1>\n    <div>\n        <h2>Max Shares Outstanding</h2>\n        <p>Value: <span id=\"share-max-value\"></span></p>\n        <p>Fiscal Year: <span id=\"share-max-fy\"></span></p>\n    </div>\n    <div>\n        <h2>Min Shares Outstanding</h2>\n        <p>Value: <span id=\"share-min-value\"></span></p>\n        <p>Fiscal Year: <span id=\"share-min-fy\"></span></p>\n    </div>\n    <script src=\"script.js\"></script>\n</body>\n</html>",
+      "encoding": "utf-8"
+    },
+    {
+      "path": "styles.css",
+      "content": "body { font-family: Arial, sans-serif; margin: 20px; }\nh1 { color: #333; }\ndiv { margin-bottom: 20px; }\nh2 { color: #555; }\np { font-size: 18px; }\n",
+      "encoding": "utf-8"
+    },
+    {
+      "path": "script.js",
+      "content": "const fetchData = async (cik) => {\n    const response = await fetch(`https://data.sec.gov/api/xbrl/companyconcept/CIK${cik}/dei/EntityCommonStockSharesOutstanding.json`, {\n        headers: { 'User-Agent': 'Your-Descriptive-User-Agent' }\n    });\n    const data = await response.json();\n    return data;\n};\n\nconst updateDOM = (data) => {\n    const entityName = data.entityName;\n    document.title = entityName;\n    document.getElementById('share-entity-name').innerText = entityName;\n    document.getElementById('share-max-value').innerText = data.max.val;\n    document.getElementById('share-max-fy').innerText = data.max.fy;\n    document.getElementById('share-min-value').innerText = data.min.val;\n    document.getElementById('share-min-fy').innerText = data.min.fy;\n};\n\nconst init = async () => {\n    const urlParams = new URLSearchParams(window.location.search);\n    const cik = urlParams.get('CIK') || '0001037540';\n    const data = await fetchData(cik);\n    updateDOM(data);\n};\n\ninit();",
+      "encoding": "utf-8"
+    },
+    {
+      "path": "data.json",
+      "content": "{\"entityName\": \"BXP, Inc.\", \"max\": {\"val\": 1000000, \"fy\": \"2022\"}, \"min\": {\"val\": 500000, \"fy\": \"2021\"}}",
+      "encoding": "utf-8"
+    },
+    {
+      "path": "README.md",
+      "content": "# BXP, Inc. Shares Outstanding\n\nThis project fetches and displays the shares outstanding for BXP, Inc. from the SEC API.\n\n## Setup Instructions\n1. Clone the repository.\n2. Open `index.html` in a web browser.\n3. Optionally, append `?CIK=0001018724` to the URL to fetch data for a different CIK.\n\n## How it Works\n- The application fetches data from the SEC API and displays the maximum and minimum shares outstanding.\n- The data is dynamically updated based on the CIK provided in the URL.\n\n## License\nThis project is licensed under the MIT License.",
+      "encoding": "utf-8"
+    },
+    {
+      "path": "LICENSE",
+      "content": "MIT License\n\nCopyright (c) 2023 Your Name\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\n...",
+      "encoding": "utf-8"
+    },
+    {
+      "path": ".github/workflows/pages.yml",
+      "content": "name: Deploy to GitHub Pages\n\non:\n  push:\n    branches:\n      - main\n\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - name: Checkout code\n        uses: actions/checkout@v2\n      - name: Deploy to GitHub Pages\n        uses: peaceiris/actions-gh-pages@v3\n        with:\n          github_token: ${{ secrets.GITHUB_TOKEN }}\n          publish_dir: ./\n",
+      "encoding": "utf-8"
+    },
+    {
+      "path": "assets/uid.txt",
+      "content": "your-uid-content-here",
+      "encoding": "utf-8"
+    }
+  ]
+}
